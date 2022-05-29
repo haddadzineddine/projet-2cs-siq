@@ -8,12 +8,10 @@ import yaml
 
 app = FastAPI()
 
+IMAGE = 'haddadzineddine/packet-tracer'
+DB_URI = 'mongodb://%s:%s@127.0.0.1' % (username, password)
 
-username = "username"
-password = "password"
-uri = 'mongodb://%s:%s@127.0.0.1' % (username, password)
-
-client = MongoClient(uri)
+client = MongoClient(DB_URI)
 
 
 class Login(BaseModel):
@@ -28,7 +26,7 @@ class Register(BaseModel):
 
 
 class Deployment:
-    def __init__(self, name, label, image, ip):
+    def __init__(self, name, label, ip, image=IMAGE):
         self.name = name
         self.label = label
         self.image = image
@@ -63,7 +61,6 @@ class Deployment:
 class DeploymentModel(BaseModel):
     name: str
     label: str
-    image: str
     ip: str
 
 
@@ -93,8 +90,8 @@ def get_databases():
 
 @app.post('/run-deployment')
 def run_packet_tracer(deploymentModel: DeploymentModel):
-    deployment = Deployment(deploymentModel.name, deploymentModel.label,
-                            deploymentModel.image, deploymentModel.ip)
+    deployment = Deployment(deploymentModel.name,
+                            deploymentModel.label, deploymentModel.ip)
     deployment.export()
 
     os.system("kubectl apply -f " + deployment.getFileName())

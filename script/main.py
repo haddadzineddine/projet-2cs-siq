@@ -5,17 +5,15 @@ import json
 
 
 IP = socket.gethostbyname(socket.gethostname())
-IMAGE = 'haddadzineddine/packet-tracer'
 apiUrl = "http://127.0.0.1:8000"
 
 app = typer.Typer()
 
 
 class Deployment:
-    def __init__(self, name, label, image, ip):
+    def __init__(self, name, label, ip):
         self.name = name
         self.label = label
-        self.image = image
         self.ip = ip
 
 
@@ -42,7 +40,7 @@ def login():
     typer.secho("Packet tracer will start in minute , plase wait", fg="green")
 
     deployment = Deployment(
-        user['username'], user['username'], IMAGE, IP).__dict__
+        user['username'], user['username'], IP).__dict__
     requests.post(apiUrl + '/run-deployment', data=json.dumps(deployment))
 
 
