@@ -18,4 +18,11 @@ spec:
         - name: packet-tracer
           image: haddadzineddine/packet-tracer
           imagePullPolicy: Never
-          env: [] 
+          env: []
+          volumeMounts:
+            - name: "packet-tracer-dir"
+              mountPath: "/home/pt/pt/saves"
+      volumes:
+        - name: "packet-tracer-dir"
+          persistentVolumeClaim:
+            claimName: "packet-tracer-data"
