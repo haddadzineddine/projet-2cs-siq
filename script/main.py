@@ -5,7 +5,7 @@ import json
 
 
 IP = socket.gethostbyname(socket.gethostname())
-apiUrl = "http://127.0.0.1:8000"
+API_URL = "http://127.0.0.1:8000"
 
 app = typer.Typer()
 
@@ -28,7 +28,7 @@ def login():
         "password": password
     }
 
-    response = requests.post(apiUrl + '/login', data=json.dumps(credentials))
+    response = requests.post(API_URL + '/login', data=json.dumps(credentials))
 
     if response.status_code != 200:
         typer.secho("Invalid credentials", fg="red")
@@ -41,7 +41,7 @@ def login():
 
     deployment = Deployment(
         user['username'], user['username'], IP).__dict__
-    requests.post(apiUrl + '/run-deployment', data=json.dumps(deployment))
+    requests.post(API_URL + '/run-deployment', data=json.dumps(deployment))
 
 
 @app.command()
@@ -58,7 +58,7 @@ def registre():
 
     }
 
-    response = requests.post(apiUrl + '/register',
+    response = requests.post(API_URL + '/register',
                              data=json.dumps(credentials))
 
     if response.status_code != 201:
