@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: packet-tracer-haddad
+    app: haddadzineddine
   name: haddadzineddine
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: packet-tracer-haddad
+      app: haddadzineddine
   template:
     metadata:
       labels:
-        app: packet-tracer-haddad
+        app: haddadzineddine
     spec:
       containers:
       - env:
         - name: DISPLAY
-          value: 192.168.242.1:0.0
+          value: 172.23.128.1:0.0
         image: haddadzineddine/packet-tracer
         imagePullPolicy: Never
         name: haddadzineddine-conatiner

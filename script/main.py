@@ -1,30 +1,74 @@
 import typer
-import yaml
 import socket
 import requests
 import json
 
 
 IP = socket.gethostbyname(socket.gethostname())
-
+IMAGE = 'haddadzineddine/packet-tracer'
 apiUrl = "http://127.0.0.1:8000"
 
+app = typer.Typer()
 
 
-def main():
+class Deployment:
+    def __init__(self, name, label, image, ip):
+        self.name = name
+        self.label = label
+        self.image = image
+        self.ip = ip
+
+
+@app.command()
+def login():
+
+    email = typer.prompt("E-mail")
+    password = typer.prompt("Password", hide_input=True)
 
     credentials = {
-        "email": "hz_haddad@esi.dz",
-        "password": "12345678"
+        "email": email,
+        "password": password
     }
 
     response = requests.post(apiUrl + '/login', data=json.dumps(credentials))
+
+    if response.status_code != 200:
+        typer.secho("Invalid credentials", fg="red")
+        return
+
     user = response.json()
 
-    print(user)
+    typer.secho("Login successfull", fg="green")
+    typer.secho("Packet tracer will start in minute , plase wait", fg="green")
 
-   
+    deployment = Deployment(
+        user['username'], user['username'], IMAGE, IP).__dict__
+    requests.post(apiUrl + '/run-deployment', data=json.dumps(deployment))
+
+
+@app.command()
+def registre():
+
+    email = typer.prompt("E-mail")
+    username = typer.prompt("Username")
+    password = typer.prompt("Password", hide_input=True)
+
+    credentials = {
+        "email": email,
+        "username": username,
+        "password": password
+
+    }
+
+    response = requests.post(apiUrl + '/register',
+                             data=json.dumps(credentials))
+
+    if response.status_code != 201:
+        typer.secho("Invalid credentials", fg="red")
+        return
+
+    typer.secho("Register successfull", fg="green")
 
 
 if __name__ == "__main__":
-    main()
+    app()
