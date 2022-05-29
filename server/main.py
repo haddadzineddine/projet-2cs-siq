@@ -8,6 +8,10 @@ import yaml
 
 app = FastAPI()
 
+username = 'username'
+password = 'password'
+
+
 IMAGE = 'haddadzineddine/packet-tracer'
 DB_URI = 'mongodb://%s:%s@127.0.0.1' % (username, password)
 

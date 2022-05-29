@@ -37,7 +37,7 @@ def login():
     user = response.json()
 
     typer.secho("Login successfull", fg="green")
-    typer.secho("Packet tracer will start in minute , plase wait", fg="green")
+    typer.secho("Starting Packet tracer please wait ... ", fg="green")
 
     deployment = Deployment(
         user['username'], user['username'], IP).__dict__
