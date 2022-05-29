@@ -48,7 +48,7 @@ class Deployment:
         template['spec']['selector']['matchLabels']['app'] = self.label
         template['spec']['template']['metadata']['labels']['app'] = self.label
         template["spec"]["template"]["spec"]["containers"][0]["image"] = self.image
-        template['spec']['template']['spec']['containers'][0]['name'] = self.name + '-conatiner'
+        template['spec']['template']['spec']['containers'][0]['name'] = self.name + '-container'
         template['spec']['template']['spec']['containers'][0]['env'].append({
             "name": "DISPLAY",
             "value": self.ip + ":0.0"
