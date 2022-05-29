@@ -34,6 +34,9 @@ class Deployment:
         self.image = image
         self.ip = ip
 
+    def getFileName(self):
+        return "tmp/deployment-" + self.name + ".yaml"
+
     def __getDeploymentTemplate():
         with open("templates/deployment.yaml") as f:
             return yaml.load(f, Loader=yaml.FullLoader)
@@ -53,7 +56,7 @@ class Deployment:
         return template
 
     def export(self):
-        with open("generators/deployment.yaml", "w") as f:
+        with open(self.getFileName(), "w") as f:
             yaml.dump(self.__generateDeployment(), f)
 
 
@@ -90,6 +93,8 @@ def get_databases():
 
 @app.post('/run-deployment')
 def run_packet_tracer(deploymentModel: DeploymentModel):
-    deployment = Deployment(deploymentModel.name, deploymentModel.label, deploymentModel.image, deploymentModel.ip)
+    deployment = Deployment(deploymentModel.name, deploymentModel.label,
+                            deploymentModel.image, deploymentModel.ip)
     deployment.export()
-    os.system("kubectl apply -f generators/deployment.yaml") 
+
+    os.system("kubectl apply -f " + deployment.getFileName())
