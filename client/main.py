@@ -54,7 +54,8 @@ def registre():
     credentials = {
         "email": email,
         "username": username,
-        "password": password
+        "password": password,
+        "role": "client"
 
     }
 

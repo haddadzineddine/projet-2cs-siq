@@ -1,19 +1,32 @@
 from typing import Union
 from fastapi import FastAPI, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pymongo import MongoClient
 import bcrypt
 import os
 import yaml
+import jwt
 
 app = FastAPI()
 
+# cors
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# db connection
 username = 'username'
 password = 'password'
 
 
 IMAGE = 'haddadzineddine/packet-tracer'
 DB_URI = 'mongodb://%s:%s@127.0.0.1' % (username, password)
+TOKEN_KEY = 'projet2cssiq'
 
 client = MongoClient(DB_URI)
 
@@ -26,6 +39,7 @@ class Login(BaseModel):
 class Register(BaseModel):
     email: str
     username: str
+    role: str
     password: str
 
 
@@ -75,11 +89,18 @@ def login(login: Login, response: Response):
     if user:
         return {
             'username': user['username'],
+            'email': user['email'],
+            'role': user['role'],
+            'token': jwt.encode(
+                {
+                    "username": user['username'],
+                    "role": user['role']
+                }, TOKEN_KEY, algorithm="HS256")
         }
     response.status_code = status.HTTP_401_UNAUTHORIZED
 
 
-@app.post("/register/", status_code=status.HTTP_201_CREATED)
+@app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(register: Register):
     collection = client['packet-tracer'].users
     user = collection.insert_one(register.__dict__)
