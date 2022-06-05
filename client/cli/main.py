@@ -4,10 +4,18 @@ import requests
 import json
 
 
-IP = socket.gethostbyname(socket.gethostname())
 API_URL = "http://127.0.0.1:8000"
 
 app = typer.Typer()
+
+
+def getIpAddress():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
+
+IP = getIpAddress()
 
 
 class Deployment:

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test
+  name: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - env:
+        - name: DISPLAY
+          value: 192.168.36.60:0.0
+        image: haddadzineddine/packet-tracer
+        imagePullPolicy: Never
+        name: test-container
+        volumeMounts:
+        - mountPath: /home/pt/pt/saves
+          name: packet-tracer-dir
+      volumes:
+      - name: packet-tracer-dir
+        persistentVolumeClaim:
+          claimName: packet-tracer-data
