@@ -53,6 +53,9 @@ class Deployment:
     def getFileName(self):
         return "tmp/deployment-" + self.name + ".yaml"
 
+    def getName(self):
+        return self.name
+
     def __getDeploymentTemplate():
         with open("templates/deployment.yaml") as f:
             return yaml.load(f, Loader=yaml.FullLoader)
@@ -119,4 +122,5 @@ def run_packet_tracer(deploymentModel: DeploymentModel):
                             deploymentModel.label, deploymentModel.ip)
     deployment.export()
 
+    os.system("kubectl delete deployment " + deployment.getFileName())
     os.system("kubectl apply -f " + deployment.getFileName())
