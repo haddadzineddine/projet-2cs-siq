@@ -13,6 +13,8 @@ const currentUser = getUser();
 const showPacketTracerModal = ref(false);
 const showControllModal = ref(false);
 
+const IP_CLIENT = import.meta.env.VITE_IP_CLIENT;
+
 const user = reactive({
   username: "",
   password: "",
@@ -27,7 +29,7 @@ const run = async () => {
   await runDeployment({
     name: currentUser.username,
     label: currentUser.username,
-    ip: "192.168.160.1",
+    ip: IP_CLIENT,
   });
   showPacketTracerModal.value = false;
 };
@@ -104,10 +106,7 @@ const resetForm = () => {
       </template>
     </Modal>
 
-    <Modal
-      :isOpen="showControllModal"
-      @closeModal="showControllModal = false"
-    >
+    <Modal :isOpen="showControllModal" @closeModal="showControllModal = false">
       <template #title> Create new Student </template>
       <template #content>
         <p class="success" v-show="successMessage">{{ successMessage }}</p>

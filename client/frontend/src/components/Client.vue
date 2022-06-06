@@ -11,12 +11,14 @@ const router = useRouter();
 const user = getUser();
 const showPacketTracerModal = ref(false);
 
+const IP_CLIENT = import.meta.env.VITE_IP_CLIENT;
+
 const run = async () => {
   showPacketTracerModal.value = true;
   await runDeployment({
     name: user.username,
     label: user.username,
-    ip: "192.168.160.1",
+    ip: IP_CLIENT,
   });
   showPacketTracerModal.value = false;
 };

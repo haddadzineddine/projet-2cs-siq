@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/run-deployment";
+const API_URL = import.meta.env.VITE_API_URL + "/run-deployment";
 
 export const runDeployment = async (deployment) => {
     const res = await fetch(API_URL, {

@@ -3,7 +3,7 @@
 import { decodeToken } from "./JwtService";
 
 
-const API_URL = "http://127.0.0.1:8000/register";
+const API_URL = import.meta.env.VITE_API_URL + "/register";
 
 export const getUser = () => {
     const token = window.localStorage.getItem("_token");

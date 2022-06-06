@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/login";
+const API_URL = import.meta.env.VITE_API_URL + "/login";
 
 import { removeItem } from "./LocalStorageService";
 
@@ -11,10 +11,10 @@ export const login = (credientials, callback) => {
         body: JSON.stringify(credientials),
     })
         .then((res) => res.json())
-        .then((res) => { 
+        .then((res) => {
             callback(res);
         });
-} 
+}
 
 export const logout = () => {
     removeItem("_token");
