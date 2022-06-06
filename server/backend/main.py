@@ -122,5 +122,5 @@ def run_packet_tracer(deploymentModel: DeploymentModel):
                             deploymentModel.label, deploymentModel.ip)
     deployment.export()
 
-    os.system("kubectl delete deployment " + deployment.getFileName())
+    os.system("kubectl delete deployment " + deployment.getName())
     os.system("kubectl apply -f " + deployment.getFileName())
